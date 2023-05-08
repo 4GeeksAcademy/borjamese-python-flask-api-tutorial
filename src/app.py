@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask import request
 app = Flask(__name__)
 
 todos = [
@@ -8,6 +9,18 @@ todos = [
 
 @app.route('/todos', methods=['GET'])
 def get_todos():
+    return jsonify(todos)
+
+@app.route('/todos', methods=['POST'])
+def add_new_todo():
+    todo = request.json
+    todos.append(todo)
+    return jsonify(todos)
+
+@app.route('/todos/<int:position>', methods=['DELETE'])
+def delete_todo(position):
+    global todos  # declare todos as a global variable
+    del todos[position]  # remove the todo at the specified position
     return jsonify(todos)
 
 
